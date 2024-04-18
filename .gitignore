@@ -1,0 +1,10 @@
+/client-frontend/node_modules
+/server-backend/node_modules
+.env/
+
+/build
+/dist
+/out
+
+.vscode/
+.idea/
