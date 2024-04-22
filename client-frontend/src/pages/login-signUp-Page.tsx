@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [loginMessage, setLoginMessage] = useState('');
 
@@ -18,15 +19,26 @@ const LoginPage = () => {
     };
   
     try {
-      const response = await fetch(url + queryParams, options);
-      const message = await response.text();
-      setLoginMessage(message); // Set the login message received from the server
+      if (isLogin) {
+        // Handle login
+        const response = await fetch(url + queryParams, options);
+        const message = await response.text();
+        setLoginMessage(message); // Set the login message received from the server
+      } else {
+        // Handle signup
+        if (password !== confirmPassword) {
+          setLoginMessage("Passwords don't match");
+          return;
+        }
+        
+        // Frontend validation passed, proceed with signup
+        // You can send a POST request to your backend to handle signup
+      }
     } catch (error) {
       console.error('Error:', error);
       // Handle error
     }
   };
-  
 
   return (
     <div className="container-fluid d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: 'lightgrey' }}>
@@ -57,6 +69,21 @@ const LoginPage = () => {
               required
             />
           </div>
+
+          {!isLogin && (
+            <div className="mb-3">
+              <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+          )}
+
           <button type="submit" className="btn btn-primary">{isLogin ? 'Login' : 'Sign Up'}</button>
         </form>
 
