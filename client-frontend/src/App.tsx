@@ -1,14 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import LoginPage from './pages/login-signUp-Page'; // Correct import statement
+import SettingsPage from './pages/settings-configuration-page';
 
 function App() {
   return (
     <div className="App">
-      <LoginPage /> {/* Use PascalCase for component names */}
+      <SettingsPage />
     </div>
   );
 }
 
-export default App; 
+export default App;
