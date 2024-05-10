@@ -1,11 +1,7 @@
 import React from 'react';
-import { Navbar, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import alertIcon from '../icons-pictures/alert.png';
-
-interface MenuItem {
-  label: string;
-  url: string;
-}
 
 interface User {
   name: string;
@@ -13,48 +9,48 @@ interface User {
 }
 
 interface NavbarProps {
-  activeSection: string;
   logo: string;
-  menuItems: MenuItem[];
   user: User;
 }
 
-const CustomNavbar: React.FC<NavbarProps> = ({ activeSection, logo, menuItems, user }) => {
-  const handleMenuClick = (url: string) => {
-    console.log('Menu item clicked:', url);
-    // You can perform any additional actions here
-  };
+const CustomNavbar: React.FC<NavbarProps> = ({ logo, user }) => {
+  const navigate = useNavigate(); // Hook to get navigate function
 
   const handleUserLogout = () => {
     console.log('User logged out');
-    // You can perform any logout actions here
+    // Perform any logout actions here, like clearing local storage or state
+    // localStorage.removeItem('userToken'); // Example: Clear user token from storage
+    navigate('/login'); // Redirect to login page after logout
   };
 
   return (
     <Navbar expand="lg" bg="light" style={{ paddingLeft: '60px', paddingRight: '60px' }}>
-      <Navbar.Brand href="#"><img src={logo} alt="Logo" style={{ width: '50px' }} /></Navbar.Brand>
+      
+      <Navbar.Brand as={Link} to="/">
+        <img src={logo} alt="Logo" style={{ width: '50px' }} />
+      </Navbar.Brand>
+
       <Navbar.Toggle aria-controls="navbarSupportedContent" />
       <Navbar.Collapse id="navbarSupportedContent">
-        <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-          {menuItems.map((item, index) => (
-            <li key={index} className={`nav-item ${activeSection === item.label.toLowerCase() ? 'active' : ''}`} style={{ marginRight: '20px' }}>
-              <a className="nav-link" href="#" onClick={() => handleMenuClick(item.url)}>{item.label}</a>
-            </li>
-          ))}
-        </ul>
+
+        <Nav className="mx-auto">
+          <Nav.Link as={Link} to="/" active={window.location.pathname === '/'}>Home</Nav.Link>
+          <Nav.Link as={Link} to="/savings" active={window.location.pathname === '/savings'}>Savings</Nav.Link>
+          <Nav.Link as={Link} to="/readings" active={window.location.pathname === '/readings'}>Readings</Nav.Link>
+          <Nav.Link as={Link} to="/settings" active={window.location.pathname === '/settings'}>Settings</Nav.Link>
+        </Nav>
+
         <div className="d-flex align-items-center">
           <span className="me-3"><img src={alertIcon} alt="Alert Icon" style={{ width: '30px', height: '30px' }} /></span>
-          <div className="dropdown">
-            <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">
-                <img src={user.profilePicture} alt="Profile Icon" style={{ width: '50px', height: '50px', borderRadius: '50%', cursor: 'pointer' }} />
-              </Dropdown.Toggle>
+          <Dropdown>
+            <Dropdown.Toggle variant="light" id="dropdown-basic">
+              <img src={user.profilePicture} alt="Profile Icon" style={{ width: '50px', height: '50px', borderRadius: '50%', cursor: 'pointer' }} />
+            </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={handleUserLogout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={handleUserLogout}>Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </Navbar.Collapse>
     </Navbar>
