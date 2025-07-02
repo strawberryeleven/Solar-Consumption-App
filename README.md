@@ -73,7 +73,9 @@ Solar Consumption System is a full-stack web application designed for households
 
 ## Contributors
 - Muhammad Ibrahim Zafar
-- [Add your team members here]
+- Hafiz Ibrahim Gul Butt
+- Shaheer Hashmi
+- Ahmad Nadeem 
 
 ---
 
